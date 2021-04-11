@@ -1,0 +1,62 @@
+
+<div class="card">
+  <div class="card-header card-header-warning">
+    <h4 class="card-title">Список задач </h4>
+  </div>
+  <div class="card-body text-center" *ngIf="tasks.length === 0">
+    <h3 class="font-weight-bold">Ничего не найдено</h3>
+  </div>
+  <div class="card-body table-responsive" *ngIf="tasks.length > 0">
+
+    <table mat-table [dataSource]="dataSource" class="col" matSort>
+      <ng-container matColumnDef="color">
+        <th *matHeaderCellDef mat-header-cell></th>
+          <td *matCellDef="let task" [style.background-color]="getPriorityColor(task)" mat-cell>
+          </td>
+      </ng-container>
+
+      <ng-container matColumnDef="id">
+        <th *matHeaderCellDef mat-header-cell></th>
+        <td *matCellDef="let index = index;" mat-cell>
+          {{index +1}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="title">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Тайтл</th>
+        <td *matCellDef="let task" mat-cell [class.completed]="task.completed">
+          {{task.title}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="priority">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Приоритет</th>
+        <td *matCellDef="let task" mat-cell [ngClass]="{completed: task.completed, novalue: !task.priority}">
+          {{task.priority ? task.priority.title : 'Без приоритета'}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Категория</th>
+        <td *matCellDef="let task" mat-cell [ngClass]="{completed: task.completed, novalue: !task.category}">
+          {{task.category ? task.category.title : 'Без категории'}}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header>Время</th>
+        <td *matCellDef="let task" mat-cell [ngClass]="{completed: task.completed, novalue: !task.date}">
+          {{task.date ? (task.date | date:'short') : 'Без даты'}}
+<!--            <mat-pseudo-checkbox></mat-pseudo-checkbox>-->
+        </td>
+      </ng-container>
+
+
+      <tr *matHeaderRowDef="displayedColumn;" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumn" mat-row></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[10, 20, 50, 100]" showFirstLastButtons></mat-paginator>
+
+  </div>
+</div>
